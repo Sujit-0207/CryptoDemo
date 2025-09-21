@@ -15,6 +15,10 @@ A Streamlit web app demonstrating three cryptographic techniques:
 ## Installation
 
 1. Clone this repository or download the source code.
+    ```bash
+    git clone github.com/Sujit-0207/CryptoDemo.git
+    ```
+   
 2. Install dependencies:
 
     ```bash
@@ -65,12 +69,6 @@ CryptoDemo/
 │── requirements.txt      # Dependencies
 │── README.md             # Setup + usage instructions
 ```
-
-## Dependencies
-
--   streamlit
--   cryptography
--   sympy
 
 ## License
 
