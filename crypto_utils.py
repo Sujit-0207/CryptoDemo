@@ -69,7 +69,11 @@ def elgamal_generate_keypair(p=None, g=None):
 
 def elgamal_sign(message, keypair):
     p, g, x = keypair['p'], keypair['g'], keypair['x']
-    m = int.from_bytes(hashes.Hash(hashes.SHA256(), backend=default_backend()).update(message.encode()) or b'\x00', 'big')
+    # Properly hash the message and convert to integer
+    digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+    digest.update(message.encode())
+    m_bytes = digest.finalize()
+    m = int.from_bytes(m_bytes, 'big')
     while True:
         k = secrets.randbelow(p-2) + 1
         if math.gcd(k, p-1) == 1:
@@ -84,7 +88,11 @@ def elgamal_verify(message, signature, keypair):
     r, s = signature
     if not (0 < r < p):
         return False
-    m = int.from_bytes(hashes.Hash(hashes.SHA256(), backend=default_backend()).update(message.encode()) or b'\x00', 'big')
+    # Properly hash the message and convert to integer
+    digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+    digest.update(message.encode())
+    m_bytes = digest.finalize()
+    m = int.from_bytes(m_bytes, 'big')
     v1 = (pow(y, r, p) * pow(r, s, p)) % p
     v2 = pow(g, m, p)
     return v1 == v2
